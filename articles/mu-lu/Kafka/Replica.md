@@ -60,11 +60,11 @@ Follower HW
 
 介绍了HW和LEO的更新时机后，我们用一轮流程来分析Fetch请求的处理过程
 
-<figure><img src="../../.gitbook/assets/image-20221202110104258 (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image-20221202110104258 (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 最开始没有任何消息，所以LEO和HW都为0
 
-<figure><img src="../../.gitbook/assets/image-20221202110501040 (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image-20221202110501040.png" alt=""><figcaption></figcaption></figure>
 
 生产者发送了一条消息，Leader副本处理produce请求，往Log底层写入日志，此时更新Leader LEO为1
 
@@ -82,7 +82,7 @@ Follower发起第二轮Fetch请求，此时Follower LEO已经被更新成了1，
 
 ### 消息丢失
 
-<figure><img src="../../.gitbook/assets/image-20221202112152657 (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image-20221202112152657.png" alt=""><figcaption></figcaption></figure>
 
 完成第一轮Fetch请求后，日志已经同步到Follower了，但是此时Follower副本所在的Broker重启了，此时Follower HW=0，在副本B重启后，会去做副本恢复工作，此时发现Follower HW=0,而Follower LEO=1,副本B会主动进行日志截断操作，将日志截断到高水位，也就是offset=1的日志会被丢弃。
 
