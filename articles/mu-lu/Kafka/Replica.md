@@ -120,13 +120,13 @@ Leader Epoch会定时写入到Leader副本所在的Broker checkPoint文件中，
 
 请求入口在KafkaApis中:
 
-```
+```scala
 case ApiKeys.FETCH => handleFetchRequest(request)
 ```
 
 handleFetchRequest中通过fetchMessages方法来处理
 
-```
+```scala
 replicaManager.fetchMessages(
     fetchRequest.maxWait.toLong,
     fetchRequest.replicaId,
@@ -143,13 +143,13 @@ replicaManager.fetchMessages(
 
 fetchMessages方法最重要的参数是interesting参数，它的签名是
 
-```
+```scala
 fetchInfos: Seq[(TopicPartition, PartitionData)]
 ```
 
 interesting的赋值来自于:
 
-```
+```scala
 fetchContext.foreachPartition { (topicPartition, data) =>
   if (!metadataCache.contains(topicPartition))
     erroneous += topicPartition -> errorResponse(Errors.UNKNOWN_TOPIC_OR_PARTITION)
@@ -160,7 +160,7 @@ fetchContext.foreachPartition { (topicPartition, data) =>
 
 这段代码的作用是，将FetchRequest的请求参数封装成了{TopicPatition:PartitionData}的格式，而PartitionData中包含了本次Fetch请求的一些Follower Replica的信息，PartitionData有几个重要的属性
 
-```
+```scala
 long fetchOffset;  //follower请求fetch位移
 long logStartOffset;
 int maxBytes;
@@ -174,18 +174,18 @@ Optional<Integer> lastFetchedEpoch; // 上一次fetch的epoch
 
 首先，会判断本次Fetch请求是来自于Consumer还是Follower，二者的拉取行为对于Leader来说是不同的，也会做不同的处理,因为本文只做副本相关的研究，因此只关注follower的请求处理。
 
-```
+```scala
 val isFromFollower = Request.isValidBrokerId(replicaId)
 val isFromConsumer = !(isFromFollower || replicaId == Request.FutureLocalReplicaId)
 ```
 
 然后，Leader就开始从底层的LogSegment读取消息了:
 
-```
+```scala
 val logReadResults = readFromLog()
 ```
 
-```
+```scala
 def readFromLog(): Seq[(TopicPartition, LogReadResult)] = {
   val result = readFromLocalLog(
     replicaId = replicaId,
@@ -208,7 +208,7 @@ readFromLog方法做了两件事情
 
 读取消息日志的部分，进行了多层封装，最终会调用到Partition.scala类的readRecords方法
 
-```
+```scala
 def readRecords(lastFetchedEpoch: Optional[Integer],
                 fetchOffset: Long,
                 currentLeaderEpoch: Optional[Integer],
@@ -263,7 +263,7 @@ def readRecords(lastFetchedEpoch: Optional[Integer],
 
 readRecords方法所做的工作就是从日志底层读取出可以被Fetch的消息。这里有一个值得关注的变量fetchIsolation,这个变量代表读取日志的方式
 
-```
+```scala
 sealed trait FetchIsolation
 case object FetchLogEnd extends FetchIsolation
 case object FetchHighWatermark extends FetchIsolation
@@ -282,7 +282,7 @@ case object FetchTxnCommitted extends FetchIsolation
 
 回到readFromLog方法，readFromLocalLog执行完后，紧接着执行了这样一行
 
-```
+```scala
 if (isFromFollower) updateFollowerFetchState(replicaId, result)
 ```
 
@@ -290,7 +290,7 @@ if (isFromFollower) updateFollowerFetchState(replicaId, result)
 
 进入updateFollowerFetchState方法一直进到Partition类里的
 
-```
+```scala
 def updateFollowerFetchState(followerId: Int,
                              followerFetchOffsetMetadata: LogOffsetMetadata,
                              followerStartOffset: Long,
@@ -327,7 +327,7 @@ getReplica就是通过本次Fetch请求的follower replica id从map里找到对�
 
 前面提到过，Leader HW是整个分区的HW，它决定了所有Consmuer和Follower的Fetch，在处理完Produce请求和Fetch请求时，Leader都需要去尝试更新Leader HW。下面我们一起看看这个神秘的Leader HW是如何被更新的
 
-```
+```scala
 private def maybeIncrementLeaderHW(leaderLog: Log, curTime: Long = time.milliseconds): Boolean = {
   var newHighWatermark = leaderLog.logEndOffsetMetadata
   remoteReplicasMap.values.foreach { replica =>
