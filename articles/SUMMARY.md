@@ -9,5 +9,6 @@
 * [JVM](mu-lu/Jvm.md)
 * [Redis](mu-lu/Redis.md)
 * [Linux](mu-lu/Linux.md)
-* [Kafka](mu-lu/Kafka.md)
+* [Kafka](mu-lu/Kafka/README.md)
+  * [多副本机制](mu-lu/Kafka/Replica.md)
 * [API 测试文档](mu-lu/api-ce-shi-wen-dang.md)
