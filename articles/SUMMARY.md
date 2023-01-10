@@ -7,7 +7,3 @@
 * [API 测试文档](api/README.md)
 
 ## 访问
-
-***
-
-* [Page 2](page-2.md)
