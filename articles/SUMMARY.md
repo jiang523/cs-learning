@@ -4,6 +4,7 @@
 
 ## 目录
 
+* [Java](mu-lu/Java.md)
 * [分布式](mu-lu/Distribute.md)
 * [微服务](mu-lu/MicoService.md)
 * [JVM](mu-lu/Jvm.md)
@@ -12,4 +13,3 @@
 * [Kafka](mu-lu/Kafka/README.md)
   * [多副本机制](mu-lu/Kafka/Replica.md)
   * [Network](mu-lu/kafka/network.md)
-* [API 测试文档](mu-lu/api-ce-shi-wen-dang.md)
