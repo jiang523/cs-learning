@@ -35,6 +35,7 @@
   * [一致性算法](mu-lu/distribute/yi-zhi-xing-suan-fa.md)
   * [分库分表](mu-lu/distribute/fen-ku-fen-biao.md)
   * [一致性Hash](mu-lu/distribute/yi-zhi-xing-hash.md)
+  * [分布式限流](mu-lu/distribute/fen-bu-shi-xian-liu.md)
 * [微服务](mu-lu/micoservice/README.md)
   * [Nacos](mu-lu/micoservice/nacos.md)
   * [Sentinel](mu-lu/micoservice/sentinel.md)
@@ -45,3 +46,5 @@
 * [系统设计](mu-lu/xi-tong-she-ji.md)
 * [项目方案](mu-lu/xiang-mu-fang-an.md)
 * [Leetcode](mu-lu/leetcode.md)
+* [English](mu-lu/english/README.md)
+  * [Success](mu-lu/english/success.md)

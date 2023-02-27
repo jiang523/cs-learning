@@ -16,16 +16,3 @@ description: JavaCS
 
 # CS知识积累
 
-## 2023 Learning Goal
-
-* [ ] Kafka
-  * [ ] 副本
-  *
-* [ ] Linux
-* [ ] Mysql
-* [ ] Redis
-* [ ] Spring
-* [ ] JVM
-* [ ] 分布式
-* [ ] 多线程
-* [ ] Leetcode
