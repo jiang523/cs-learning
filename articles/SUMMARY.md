@@ -9,6 +9,8 @@
   * [线程池](mu-lu/Java/xian-cheng-chi.md)
   * [AQS](mu-lu/Java/aqs.md)
   * [锁](mu-lu/Java/suo.md)
+  * [设计模式](mu-lu/Java/she-ji-mo-shi/README.md)
+    * [单例模式](mu-lu/Java/she-ji-mo-shi/dan-li-mo-shi.md)
 * [Mysql](mu-lu/mysql/README.md)
   * [锁](mu-lu/mysql/suo.md)
   * [索引](mu-lu/mysql/suo-yin.md)
