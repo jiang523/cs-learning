@@ -20,13 +20,21 @@ description: 异步任务编排工具
 
 1. 串行
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220831161444428.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 串行执行是最简单的方式，但是性能最差，因为step1和step2其实可以并行执行，等这两步都执行完了，再执行step3。
 
 1. Future + CountDownLatch
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220831162553998.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 获取Future的执行结果需要通过get()方法，这个方法会阻塞当前线程，效率比较低。
 
@@ -34,7 +42,11 @@ description: 异步任务编排工具
 
 我们可以通过一些第三方对Future的拓展来实现，如Google Guava的ListenableFutureTask:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220831163712948.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 这种方式可以不用显示的调用Future的get方法来阻塞式的获取任务结果，而是任务执行完成以后通过回调函数自动触发。但与此同时，如果任务依赖很复杂，将会需要写很多的回调函数，造成臭名昭著的"回调地狱"
 
@@ -42,11 +54,19 @@ description: 异步任务编排工具
 
 前面对比了几种实现任务编排的方式，但功能上都有很明显的缺陷和不足，并且都不够优雅。JDK8为提供了一款强大的异步任务的编排工具CompletableFuture,它让异步任务的处理变得十分简单和优雅，上面的例子，用CompletableFuture可以这样实现:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220831164954092.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 是不是非常简单和优雅?
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/75a9710d2053b2fa0654c67cd7f35a0c18774.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 CompletableFuture实现了Future和CompletionStage两个接口，它既延续了Future的特性，也具备了CompletionStage里所有的特性。下面我们就主要的方法出发，看看CompletableFuture应该如何使用。
 
@@ -177,7 +197,11 @@ CompletableFuture的完整处理可以分为三个步骤: 创建CompletableFutur
 
 很多情况下，多个CompletableFuture之间会有着依赖关系，如何优雅的处理不同任务之间复杂的依赖关系，是CompletableFuture的核心。CompletableFuture提供了很多用于任务编排的方法。
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220905114755994-2634758.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 这里主要介绍这三个分类的十个方法，这十个方法都是同步方法，每个方法都有与之对应的以Async结尾的异步方法。并且每个分类的各个方法作用其实都是类似的，需要在于传入的参数类型，有的是函数式参数，而有的是Runnable，可以根据处理依赖时不同的需求来选择相应的方法。
 
@@ -321,7 +345,7 @@ AND依赖是两个任务都执行完后执行后续，而OR依赖则是两个任
 
 有时候经过一系列的任务编排以后，我们需要获取最终的任务合并结果。在FutureTask中，可以手动通过get()方法阻塞式的获取任务的执行结果，而CompletableFuture中，通过任务的编排，我们可以在所有任务都执行完毕以后再去获取最终的结果，因此可以不用阻塞的获取任务结果,CompletableFuture提供了get(),join(),getNow()等方法用于获取结果。
 
-#### **异常处理**
+#### **异常处理和任务取消**
 
 在FutureTask中，可以用onFailure回调函数来处理任务执行过程中出现异常的情况，CompletableFuture用一种更优雅无需回调的方式来处理异常:
 
@@ -329,6 +353,69 @@ AND依赖是两个任务都执行完后执行后续，而OR依赖则是两个任
 cf1.applyToEither(cf2, r -> r)
 .exceptionally(ex -> 
     {System.out.println(ex.getMessage()); return null;});
+```
+
+如果task抛出异常，可以在exceptionally里通过task.cancal()来取消task的运行。
+
+```java
+import java.util.concurrent.CompletableFuture;
+
+public class TaskCancellationExample {
+    public static void main(String[] args) {
+        CompletableFuture<String> task1 = CompletableFuture.supplyAsync(() -> {
+            // 第一个任务
+            // ...
+            // 如果任务失败，抛出异常
+            throw new RuntimeException("Task 1 failed");
+        });
+
+        CompletableFuture<String> task2 = CompletableFuture.supplyAsync(() -> {
+            // 第二个任务
+            // ...
+            return "Task 2 result";
+        });
+
+        CompletableFuture<String> task3 = CompletableFuture.supplyAsync(() -> {
+            // 第三个任务
+            // ...
+            return "Task 3 result";
+        });
+
+        CompletableFuture<Void> allTasks = CompletableFuture.allOf(task1, task2, task3);
+
+        allTasks.exceptionally(ex -> {
+            // 当有任意一个任务失败时，执行取消或其他处理逻辑
+            task1.cancel(true);
+            task2.cancel(true);
+            task3.cancel(true);
+            System.out.println("All tasks cancelled");
+            return null;
+        });
+
+        // 等待所有任务完成
+        allTasks.join();
+
+        // 检查任务的结果
+        if (task1.isCompletedExceptionally()) {
+            System.out.println("Task 1 failed");
+        } else {
+            System.out.println("Task 1 result: " + task1.join());
+        }
+
+        if (task2.isCompletedExceptionally()) {
+            System.out.println("Task 2 failed");
+        } else {
+            System.out.println("Task 2 result: " + task2.join());
+        }
+
+        if (task3.isCompletedExceptionally()) {
+            System.out.println("Task 3 failed");
+        } else {
+            System.out.println("Task 3 result: " + task3.join());
+        }
+    }
+}
+
 ```
 
 ## 任务由哪个线程执行？
@@ -370,7 +457,11 @@ public static void sleep(int seconds){
 
 这是一段非常简单的CompletableFuture的运用，按照thenCombine的实现，正常控制台应该打印最终的合并结果，然后这段代码运行之后并没有打印合并结果
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220908172756319-2634764.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 笔者最开始碰到这种情况时，百思不得其解，thenCombin不是同步的方法吗，两个task执行完毕以后，应该会打印合并结果。
 
@@ -406,13 +497,21 @@ public String getCombineInfo() {
 
 浏览器访问，控制台输出的结果:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220908183748601-2634768.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 可以看到thenCombine里的打印结果输出来了，并且是有ForkJoinPool里的线程执行的，验证了我们的猜想。
 
 现在换个方式，我在thenCombine之前将主线程sleep 2s，确保thenCombine执行的时候两个task都已经执行完成,这个时候控制台输出的是:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220908184209559-2634772.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 可以看到，combine的结果是正常的，而执行combine的线程变成了一个http-nio线程，这其实是tomcat里的一个线程，也就是运行这个controller的主线程。
 
@@ -457,6 +556,10 @@ public String getCombineInfo() {
 
 输出的结果:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220908185125867-2634777.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 结果符合我们的猜想，由于cf3是最后一个执行完的，所以最终的accept操作由cf3所在的线程执行。
