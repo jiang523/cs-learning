@@ -66,4 +66,32 @@ public static Singleton getInstance() {
 
 ## 5. 枚举
 
-枚举是天然单例的。其他的单例可以被反射破坏(反射可以调用私有的)
+枚举是天然单例的。其他的单例可以被反射破坏(反射可以调用私有的构造方法)，而枚举是无法被反射调用构造方法的，原因在与Constructor的newInstance()时针对枚举的处理。
+
+{% code lineNumbers="true" %}
+```java
+@CallerSensitive
+    public T newInstance(Object ... initargs)
+        throws InstantiationException, IllegalAccessException,
+               IllegalArgumentException, InvocationTargetException
+    {
+        if (!override) {
+            if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) {
+                Class<?> caller = Reflection.getCallerClass();
+                checkAccess(caller, clazz, null, modifiers);
+            }
+        }
+        if ((clazz.getModifiers() & Modifier.ENUM) != 0)
+            throw new IllegalArgumentException("Cannot reflectively create enum objects");
+        ConstructorAccessor ca = constructorAccessor;   // read volatile
+        if (ca == null) {
+            ca = acquireConstructorAccessor();
+        }
+        @SuppressWarnings("unchecked")
+        T inst = (T) ca.newInstance(initargs);
+        return inst;
+    }
+```
+{% endcode %}
+
+12行，如果判断被反射的类是被enum修饰的，会抛出Cannot reflectively create enum objects异常。
