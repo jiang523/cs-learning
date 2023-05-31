@@ -51,7 +51,7 @@
     * [网络中的加密算法](mu-lu/ji-suan-ji-ji-chu/wang-luo/wang-luo-zhong-de-jia-mi-suan-fa.md)
 * [系统设计](mu-lu/xi-tong-she-ji/README.md)
   * [OAuth2](mu-lu/xi-tong-she-ji/oauth2.md)
-* [项目方案](mu-lu/xiang-mu-fang-an/README.md)
+* [项目方案](mu-lu/xiang-mu-fang-an.md)
   * [基于心跳的防沉迷设计](mu-lu/xiang-mu-fang-an/ji-yu-xin-tiao-de-fang-chen-mi-she-ji.md)
   * [支付流程](mu-lu/xiang-mu-fang-an/zhi-fu-liu-cheng.md)
   * [多个渠道支付如何解决？](mu-lu/xiang-mu-fang-an/duo-ge-qu-dao-zhi-fu-ru-he-jie-jue.md)
