@@ -41,7 +41,11 @@ BSS段： 存放程序中未初始化的全局变量
 
 Linux为每个进程都分配了一个独立的虚拟内存空间，也就是一段空间，这张图描述了Linux的分段机制:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220628185741850.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 根据这张图可以看出，进程虚拟内存的分段机制，让所有进程的内存形成了线性的结构，因此可以先来看看逻辑地址 —>线性地址是如何映射的。
 
@@ -51,17 +55,29 @@ Linux为每个进程都分配了一个独立的虚拟内存空间，也就是一
 
 上面分析了linux如何将逻辑地址和线性地址对应的，线性地址始终还是虚拟内存中的地址概念，那么linux是如何将虚拟内存和物理内存做映射的呢？答案是分页机制。
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220119155919281-2579162.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 上面这张图描述了虚拟内存到物理内存的映射过程。linux将物理内存以4k为单位分页，内存的读取可以连续也可以分散。
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220127150603075.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 这张图描述了虚拟内存到物理内存的寻址过程:CR3寄存器 —> 页目录 —> 页表 —> 物理页。
 
 页表项的结构：
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220127162905082.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 由于物理地址是20位表示的，所以页表项剩下12位可以另作他用，而12位中有3位为os专用，1位空白，剩下8位中，主要有这几个:
 
@@ -142,7 +158,11 @@ struct vm_area_struct {
 
 目前介绍了三种虚拟内存相关的数据结构，下图表示了这三种数据结构所构成的结构:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220628154603670.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 1.  优先查找树:
 
@@ -161,7 +181,11 @@ struct vm_area_struct {
 
 映射的过程如下图所示:
 
+<div align="left">
+
 <figure><img src="../../.gitbook/assets/image-20220628155843930.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 ## 虚拟内存映射
 

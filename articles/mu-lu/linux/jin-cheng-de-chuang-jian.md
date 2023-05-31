@@ -69,7 +69,11 @@ struct task_struct {
 
 
 
+<div align="left">
+
 <figure><img src="https://img-blog.csdnimg.cn/58db57f78f964a1ead83dc27601ebfb3.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAcXFfNDE3NjExNzY=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 ### 进程的状态
 

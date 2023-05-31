@@ -127,7 +127,11 @@ cmpl指令是比较指令，current是一个代表当前正在运行的进程的
 
 从图中可以看出，第一个tss段的索引是4，对应这FIRST\_TSS\_ENTRY，而tss段的结构为: &#x20;
 
+<div align="left">
+
 <figure><img src="https://img-blog.csdnimg.cn/c7b07b0330f14dffba2517abd542524e.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 前三位无用，因此FIRST\_TSS\_ENTRY左移3作为基地址，加上n作为偏移地址找到切换的进程的tss段。
 
@@ -160,7 +164,11 @@ ljmp指令是一条跳转指令，它可以从cpu从一行代码跳转到另一�
 
 ljmp大致过程是：ljmp判断为TSS类型，于是就告诉硬件要切换任务，硬件首先要将当前的PC，esp, eax等现场信息保存在自己的TSS端描述符中，然后再将目标TSS段描述符中的pc, esp, eax的值拷贝至对应寄存器中，这些工作全部做完以后，内核就实现了进程上下文环境的切换。
 
+<div align="left">
+
 <figure><img src="https://img-blog.csdnimg.cn/a905c8f4d79d40348ff7983930d0502d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAY29kZSBzaG93ZXI=,size_20,color_FFFFFF,t_70,g_se,x_16" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 执行完ljmp以后，cpu就跳转到新的进程的代码段执行了，当前switch\_to的代码将暂停执行直到进程恢复。
 
