@@ -63,6 +63,7 @@
   * [登录流程](mu-lu/xiang-mu-fang-an/deng-lu-liu-cheng.md)
   * [常用的加密签名算法](mu-lu/xiang-mu-fang-an/chang-yong-de-jia-mi-qian-ming-suan-fa.md)
   * [延时消息的设计](mu-lu/xiang-mu-fang-an/yan-shi-xiao-xi-de-she-ji.md)
+  * [游戏风控](mu-lu/xiang-mu-fang-an/you-xi-feng-kong.md)
 * [Leetcode](mu-lu/leetcode.md)
 * [English](mu-lu/english/README.md)
   * [Success](mu-lu/english/success.md)
