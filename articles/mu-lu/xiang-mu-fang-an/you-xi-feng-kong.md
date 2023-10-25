@@ -40,3 +40,4 @@
 风控资料
 
 1. 莉莉丝手游反欺诈:[https://www.secrss.com/articles/57498](https://www.secrss.com/articles/57498)
+2. 游戏币反洗钱: [https://zhuanlan.zhihu.com/p/374069030](https://zhuanlan.zhihu.com/p/374069030)
