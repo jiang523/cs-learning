@@ -66,7 +66,7 @@ innoDB存储引擎默认采用行锁，行级锁锁定粒度最小，发生锁�
 
 举个简单的例子
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 B事务的操作会出现什么现象？答案是B事务会被阻塞。在A事务开启后，将会持有id=1,2两条记录的写行锁，但是执行完成后写锁并没有释放，而是commit以后才会释放，因此事务B在A事物commit之前对id=1的操作会被阻塞。
 

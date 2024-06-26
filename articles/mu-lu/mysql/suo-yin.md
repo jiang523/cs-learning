@@ -81,7 +81,7 @@ select * from student where name = 'jack'
 
 查询的过程就如下图所示
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 首先会走name索引，在name索引的B+树中找到name='jack'的叶子节点，由于是非聚簇索引，该叶子节点上存储的就是索引字段(name)+主键字段(id)，找到对应的id后，再进一步去主键id的索引(聚簇索引)上查找id对应的记录，最终返回id,name,age字段。
 
