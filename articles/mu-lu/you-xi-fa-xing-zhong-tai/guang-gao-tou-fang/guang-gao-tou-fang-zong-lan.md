@@ -4,7 +4,7 @@
 
 ## 生态
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 1、在广告生态通常有四大角色：
 
@@ -58,7 +58,7 @@ d. 广告情报：以中立的身份提供行业广告的大盘洞察，包括�
 
 ## 投放人员视角
 
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 一次投放活动的流程简述如下：
 
